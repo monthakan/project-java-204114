@@ -5,25 +5,42 @@ public class SceneChanger {
 	GameManager gm;
 	boolean start=false;
 	
-	public SceneChanger(GameManager gm)  {
-		
-		this.gm = gm;
-	}
+	public SceneChanger(GameManager gm)  {this.gm = gm;}
 	
-	public void showScreen() {
+	// show dialouge screen
+	public void showDialogueScreen() {
 
 		gm.ui.bgPanel[0].setVisible(false);
-	}
-	
-	public void showScreen1() {
-
 		gm.ui.bgPanel[1].setVisible(true);
 		gm.ui.bgPanel[2].setVisible(false);
+		gm.ui.bgPanel[3].setVisible(false);
+		gm.ui.bgPanel[4].setVisible(false);
 	}
-	
-	public void showScreen2() {
-		
+	// show select ingredient screen
+	public void showSelectIngScreen() {
+
+		gm.ui.bgPanel[0].setVisible(false);
 		gm.ui.bgPanel[1].setVisible(false);
 		gm.ui.bgPanel[2].setVisible(true);
+		gm.ui.bgPanel[3].setVisible(false);
+		gm.ui.bgPanel[4].setVisible(false);
+	}
+	// show stove screen
+	public void showStoveScreen() {
+
+		gm.ui.bgPanel[0].setVisible(false);
+		gm.ui.bgPanel[1].setVisible(false);
+		gm.ui.bgPanel[2].setVisible(false);
+		gm.ui.bgPanel[3].setVisible(true);
+		gm.ui.bgPanel[4].setVisible(false);
+	}
+	// show package screen
+	public void showPackageScreen() {
+		
+		gm.ui.bgPanel[0].setVisible(false);
+		gm.ui.bgPanel[1].setVisible(false);
+		gm.ui.bgPanel[2].setVisible(false);
+		gm.ui.bgPanel[3].setVisible(false);
+		gm.ui.bgPanel[4].setVisible(true);
 	}
 }
