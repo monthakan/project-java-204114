@@ -1,10 +1,14 @@
 package Main;
 
+import entity.animeCast;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +18,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import ui.ExitButton;
 import ui.SoundButton;
+import ui.YesButton;
+
 
 public class UI {
 
@@ -28,16 +34,21 @@ public class UI {
     boolean start = false;
     boolean isKapao = false;
     boolean voice;
+    boolean onStove = false;
+    private JTextArea timerText;
+    private int remainingTime;
+    private boolean pause = false;
 
     public UI(GameManager gm) {
         this.gm = gm;
+        
         createMainField();
         generateTitle();
         window.setVisible(true);
     }
 
     public void createMainField() { //สร้างหน้าต่างเกม
-        window = new JFrame();
+        window = new JFrame("Padkapao Good");
         window.setSize(1920, 1080);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.black);
@@ -60,8 +71,8 @@ public class UI {
             System.err.println("ไม่พบไฟล์: " + bgFileName);
         }
 
-        bgPanel[bgNum].add(bgLabel[bgNum]);
-        window.add(bgPanel[bgNum]);
+        // bgPanel[bgNum].add(bgLabel[bgNum]); 
+        // window.add(bgPanel[bgNum]);
     }
 
     public void createObject(int bgNum, int objx, int objy, int objWidth, int objHeight, String objFileName, String Command){
@@ -91,7 +102,7 @@ public class UI {
 					
 					System.out.println("Left Click!");
 					// clear kapao with rice and add kapao with rice in package
-					if (Command == "insertKapao") {
+					if (Command.equals("insertKapao")) {
 						
 						window.remove(bgPanel[3]);
 						generateStoveScene();
@@ -103,7 +114,7 @@ public class UI {
 						packKapao(Command);
 						
 					// pack kapao
-					}else if (Command == "ready2pack"){
+					}else if (Command.equals("ready2pack")){ 
 						
 						System.out.println("PACK ENTER");
 						packKapao(Command);
@@ -122,63 +133,6 @@ public class UI {
         
         //add panel
         bgPanel[bgNum].add(objectLabel);
-    }
-    public void changeStove(String Command) {
-    	
-        // delete
-    	window.remove(bgPanel[3]);
-        
-    	//timer start [still bug]
-    	//countdownThread.start();
-        
-        // create new
-    	createBackground(3,"menubg1920x1080.png");
-    	
-    	createObject(3, 600, 700, 300, 300,	 "rice300x300.png", "addRice");
-    	
-    	createArrowButton(3, 0, 400, 300, 300, "leftArrow300x300.png", "goSelectIngScreen");
-    	createArrowButton(3, 1620, 400, 300, 300, "rightArrow300x300.png", "goPackageScreen");
-        
-        //create stove new stove
-        System.out.println(Command);
-        
-        switch(Command) {
-        	
-        	//default : createObject(3, 200, 700, 300, 300, "stove300x300.png", "stove"); break;
-        	// change image at stove
-        	case "addkapao" : 
-        		
-        		// add kapao
-        		createObject(3, 200, 700, 300, 300, "kapao300x300.png", "addkapao");
-        		isKapao = true;
-        		break;
-        		
-    		case "addmpork" : 
-    			
-    			// add micedpork
-    			createObject(3, 200, 700, 300, 300, "micedpork 300x300.png", "addmpork");
-    			isKapao = true;
-    			break;
-    		
-    		//add rice
-    		case "addRice" : 
-
-    			// have kapao in stove?
-    			if(isKapao) {
-    				isKapao = false;
-    				createObject(3, 200, 700, 300, 300,	 "stove300x300.png", "stove");
-    				createObject(3, 1000, 700, 300, 300, "kapaoRice300x300.png", "insertKapao"); 
-    			}
-    			break;
-        }
-
-        //add panel
-        bgPanel[3].add(bgLabel[3]);
-        window.add(bgPanel[3]);
-        
-        // refresh
-        window.revalidate();
-        window.repaint();
     }
     public void createArrowButton(int bgNum, int x, int y, int Width, int Height, String arrowFileName, String Command) {
     	
@@ -230,6 +184,9 @@ public class UI {
                             ImageIcon clickedIcon = new ImageIcon(getClass().getResource("/resources/picture/playButtonClicked.png"));
                             startButton.setIcon(clickedIcon);
                             generateDialogueScene();
+                            generateSelectIngScene();
+                            generateStoveScene();
+                            generatePackageScene();
                             System.out.println("Start!");
                         }
                     }
@@ -256,7 +213,7 @@ public class UI {
             System.err.println("ไม่พบไฟล์: " + arrowFileName);
         }
     }
-    public void generateTitle(){ //หน้าแรกของเกม
+    public void generateTitle(){ //หน้าแรกของเกม pageone
 
         // สร้างหน้าจอเมนู
         bgPanel[0] = new JPanel();
@@ -280,23 +237,45 @@ public class UI {
         window.add(bgPanel[0]);
     }
 
-    public void generateDialogueScene() {
-    	
-    	// screen1
-    	createBackground(1,"menubg1920x1080.png");
-    	
-    	createArrowButton(1, 1620, 400, 300, 300, "rightArrow300x300.png", "goSelectIngScreen");
-    	
-    	// add to window
-    	bgPanel[1].add(bgLabel[1]);
-    	window.add(bgPanel[1]);
+    public void generateDialogueScene() { //page2 ->สั่งข้าว
+    
+        // screen1
+        createBackground(1, "secondpage.png");
+    
+        // เรียกใช้งาน class ตัวละคร
+        animeCast anime = new animeCast();
+        anime.setOpaque(false);  // ทำให้ตัวละครมีพื้นหลังโปร่งใส
+        anime.setBounds(0, -100, 1920, 1080);  // ตั้งค่าตำแหน่งเริ่มต้นของตัวละคร
+        window.add(bgLabel[1]);
+        anime.startMoving();  // เริ่มการเคลื่อนที่ของตัวละคร
+        bgPanel[1].add(anime); // เพิ่มตัวละครลงในหน้าจอ
+
+        YesButton yes = new YesButton(window);
+        bgPanel[1].add(yes.getYesButton());
+    
+        // ปุ่มลูกศรไปหน้าถัดไป
+        createArrowButton(1, 1620, 400, 300, 300, "rightArrow300x300.png", "goSelectIngScreen");
+    
+        // เพิ่ม bgPanel[1] ลงใน window
+        bgPanel[1].add(bgLabel[1]);
+        window.add(bgPanel[1]);
+    
+        // รีเฟรชหน้าจอ
+        window.revalidate();
+        window.repaint();
+    
+        // เริ่มการเคลื่อนที่ของตัวละคร
+        //moveCharacterIn(anime);
     }
     
+    
+    
     //generate select ingredient scene
-    public void generateSelectIngScene() {
+    public void generateSelectIngScene() { //page3 ->เลือกวัตถุดิบ
     	
     	//screen2
-    	createBackground(2,"menubg1920x1080.png");
+    	createBackground(2,"thirdpage.png");
+        
     	
     	// add ingredients
     	createObject(2, 200, 300, 300, 300, "kapao300x300.png", "addkapao");
@@ -337,7 +316,63 @@ public class UI {
     	bgPanel[4].add(bgLabel[4]);
     	window.add(bgPanel[4]);
     }
-    // pack Kapao image
+    //change stove image
+    public void changeStove(String Command) {
+    	
+        // delete
+    	window.remove(bgPanel[3]);
+            
+        // create new
+    	createBackground(3,"menubg1920x1080.png");
+    	
+    	createObject(3, 600, 700, 300, 300,	 "rice300x300.png", "addRice");
+    	
+    	createArrowButton(3, 0, 400, 300, 300, "leftArrow300x300.png", "goSelectIngScreen");
+    	createArrowButton(3, 1620, 400, 300, 300, "rightArrow300x300.png", "goPackageScreen");
+        
+        //create stove new stove
+        System.out.println(Command);
+        
+        switch(Command) {
+        	
+        	//default : createObject(3, 200, 700, 300, 300, "stove300x300.png", "stove"); break;
+        	// change image at stove
+        	case "addkapao" : 
+        		
+        		// add kapao
+        		createObject(3, 200, 700, 300, 300, "kapao300x300.png", "addkapao");
+        		isKapao = true;
+        		break;
+        		
+    		case "addmpork" : 
+    			
+    			// add micedpork
+    			createObject(3, 200, 700, 300, 300, "micedpork 300x300.png", "addmpork");
+    			isKapao = true;
+    			break;
+    		
+    		//add rice
+    		case "addRice" : 
+
+    			// have kapao in stove?
+    			if(isKapao) {
+    				isKapao = false;
+    				onStove = false;
+    				createObject(3, 200, 700, 300, 300,	 "stove300x300.png", "stove");
+    				createObject(3, 1000, 700, 300, 300, "kapaoRice300x300.png", "insertKapao"); 
+    			}
+    			break;
+    		case "BURNED" : createObject(3, 200, 700, 300, 300,	 "burned 300x300.png", ""); break;
+        }
+
+        //add panel
+        bgPanel[3].add(bgLabel[3]);
+        window.add(bgPanel[3]);
+        
+        // refresh
+        window.revalidate();
+        window.repaint();
+    }
     public void packKapao(String Command) {
     	
     	// delete
@@ -368,6 +403,96 @@ public class UI {
     	window.add(bgPanel[4]);
     	
     	// refresh
+        window.revalidate();
+        window.repaint();
+    }
+    // timer
+    	
+    public void generateGameOverScene() {
+    	
+    	createBackground(5,"gameoverbg1920x1080.png");
+    	
+    	createArrowButton(5, 960, 500, 300, 300, "restart300x300.png", "restart");
+    	
+    	bgPanel[5].add(bgLabel[5]);
+    	window.add(bgPanel[5]);
+    }
+    // timer
+    public void timer(int time, String Command) {
+    	Timer timer = new Timer();
+    	
+    	timerText = new JTextArea();
+        
+        bgPanel[1].setLayout(null);
+
+        // Set timer display properties
+        timerText.setBounds(960, 100, 50, 30);
+        timerText.setForeground(Color.white);
+        timerText.setBackground(Color.black);
+        timerText.setOpaque(true); // Ensure visibility
+        timerText.setEditable(false);
+        timerText.setFont(new Font("Book Antiqua", Font.PLAIN, 26));
+        
+     // Add the timer text to the panel
+        bgPanel[1].add(timerText);
+        bgPanel[1].setComponentZOrder(timerText, 0); // Bring to front
+
+        // Refresh UI
+        bgPanel[1].revalidate();
+        bgPanel[1].repaint();
+        
+    	TimerTask task = new TimerTask() { 
+    	
+    	int count = time;
+
+    	@Override
+    	public void run() {
+    		
+    		// decrease time
+    		SwingUtilities.invokeLater(() -> {
+                timerText.setText(""+count); // Update text
+            });
+           
+    		System.out.println(count);
+    		count--;   
+    		
+    		// functions
+    		if(count < 0 && Command.equals("OVERALL")) {
+    			
+    			// create game over scene
+    			generateGameOverScene();
+    			gm.sChanger.showGameOver();
+    			timer.cancel();
+    			
+    		} else if (count < 0 && Command.equals("STOVE") && onStove == true) {
+    			
+    			// create burned
+    			changeStove("BURNED");
+    			timer.cancel();
+    		} else if (pause == true) {
+    			
+    			// pause & keep time
+    			remainingTime = count;
+    			timer.cancel();
+    		}
+    	}};
+    	// delay
+    	timer.scheduleAtFixedRate(task, 0, 1000);
+    }
+    
+    public void reset() {
+    	
+    	System.out.println("restart!");
+    	
+    	// delete everything
+    	window.remove(window);
+    	
+    	//create title scene
+        createMainField();
+        generateTitle();
+        window.setVisible(true);
+        
+        // Refresh UI
         window.revalidate();
         window.repaint();
     }
