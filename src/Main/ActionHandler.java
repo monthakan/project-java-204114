@@ -25,8 +25,9 @@ public class ActionHandler implements ActionListener{
 		case "start" : gm.sChanger.showDialogueScreen(); break;
 		case "goDialogueScreen":gm.sChanger.showDialogueScreen(); break;
 		case "goSelectIngScreen":gm.sChanger.showSelectIngScreen(); break;
-		case "goStoveScreen":gm.sChanger.showStoveScreen(); break;
+		case "goExtraScreen":gm.sChanger.showExtraScreen(); break;
 		case "goPackageScreen":gm.sChanger.showPackageScreen(); break;
+		case "goGameOverScreen":gm.sChanger.showGameOverScreen(); break;
 		}
 	}
 }

@@ -21,7 +21,7 @@ public class ExitButton {
         }
 
         // กำหนดขนาดและตำแหน่งของปุ่ม Exit
-        exitButton.setBounds(1800, 0, 120, 130);
+        exitButton.setBounds(1550, 5, 140, 120);
         exitButton.setBackground(null);
         exitButton.setContentAreaFilled(false);
         exitButton.setBorderPainted(false);

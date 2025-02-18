@@ -27,8 +27,8 @@ public class UI {
 
     JFrame window;
     public JTextArea messageText;
-    public JPanel bgPanel[] = new JPanel[5];
-    public JLabel bgLabel[] = new JLabel[5];
+    public JPanel bgPanel[] = new JPanel[7];
+    public JLabel bgLabel[] = new JLabel[7];
 
     String stove = "";
     boolean start = false;
@@ -49,7 +49,7 @@ public class UI {
 
     public void createMainField() { //สร้างหน้าต่างเกม
         window = new JFrame("Padkapao Good");
-        window.setSize(1920, 1080);
+        window.setSize(1680, 1050);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.black);
         window.setLayout(null);
@@ -57,11 +57,11 @@ public class UI {
 
     public void createBackground(int bgNum, String bgFileName) {
         bgPanel[bgNum] = new JPanel();
-        bgPanel[bgNum].setBounds(0, 0, 1920, 1080);
+        bgPanel[bgNum].setBounds(0, 0, 1680, 1050);
         bgPanel[bgNum].setLayout(null);
 
         bgLabel[bgNum] = new JLabel();
-        bgLabel[bgNum].setBounds(0, 0, 1920, 1080);
+        bgLabel[bgNum].setBounds(0, 0, 1680, 1050);
 
         URL location = getClass().getResource("/resources/picture/" + bgFileName);
         if (location != null) {
@@ -105,7 +105,7 @@ public class UI {
 					if (Command.equals("insertKapao")) {
 						
 						window.remove(bgPanel[3]);
-						generateStoveScene();
+						generateExtraScene();
 						
 						// refresh
 				        window.revalidate();
@@ -183,10 +183,11 @@ public class UI {
                             // change icon when clicked
                             ImageIcon clickedIcon = new ImageIcon(getClass().getResource("/resources/picture/playButtonClicked.png"));
                             startButton.setIcon(clickedIcon);
-                            generateDialogueScene();
-                            generateSelectIngScene();
-                            generateStoveScene();
-                            generatePackageScene();
+                            generateDialogueScene(); // สร้างหน้าจอสั่งข้าว
+                            generateSelectIngScene(); // สร้างหน้าจอเลือกวัตถุดิบ
+                            generateExtraScene(); // สร้างหน้าจอเลือกวัตถุดิบ
+                            generatePackageScene(); // สร้างหน้าจอผัดและแพ็ค
+                            generateGameOverScene(); //หน้าส่งอาหารให้ลูกค้า
                             System.out.println("Start!");
                         }
                     }
@@ -217,10 +218,10 @@ public class UI {
 
         // สร้างหน้าจอเมนู
         bgPanel[0] = new JPanel();
-        bgPanel[0].setBounds(0, 0, 1920, 1080);
+        bgPanel[0].setBounds(0, 0, 1680, 1050);
         bgPanel[0].setLayout(null);
 
-        createBackground(0, "menubg1920x1080.png");
+        createBackground(0, "firstpagebg.png");
         //createExitButton(0, 1800, 0, 120, 130, "ExitButton.png", "exit");
         // เรียกใช้งาน class ExitButton และสร้างปุ่ม Exit
         ExitButton exit = new ExitButton(window); // สร้างปุ่ม Exit
@@ -230,7 +231,7 @@ public class UI {
         SoundButton sound = new SoundButton(window); // สร้างปุ่มเสียง
         bgPanel[0].add(sound.getSoundButton()); // เพิ่มปุ่มเสียงลงในหน้าจอ
         
-        createStartButton(0, 740, 320, 500, 500, "playButton.png", "start");
+        createStartButton(0, 620, 300, 500, 500, "playButton.png", "start");
         //createStartButton(0, 750, 280, 500, 500, "playButtonClicked.png", "start");
 
         bgPanel[0].add(bgLabel[0]);
@@ -245,7 +246,7 @@ public class UI {
         // เรียกใช้งาน class ตัวละคร
         animeCast anime = new animeCast();
         anime.setOpaque(false);  // ทำให้ตัวละครมีพื้นหลังโปร่งใส
-        anime.setBounds(0, -100, 1920, 1080);  // ตั้งค่าตำแหน่งเริ่มต้นของตัวละคร
+        anime.setBounds(0, -122, 1920, 1080);  // ตั้งค่าตำแหน่งเริ่มต้นของตัวละคร
         window.add(bgLabel[1]);
         anime.startMoving();  // เริ่มการเคลื่อนที่ของตัวละคร
         bgPanel[1].add(anime); // เพิ่มตัวละครลงในหน้าจอ
@@ -276,28 +277,29 @@ public class UI {
     	//screen2
     	createBackground(2,"thirdpage.png");
         
+        
     	
     	// add ingredients
     	createObject(2, 200, 300, 300, 300, "kapao300x300.png", "addkapao");
     	createObject(2, 550, 300, 300, 300, "micedpork 300x300.png", "addmpork");
     	
     	createArrowButton(2, 0, 400, 300, 300, "leftArrow300x300.png", "goDialogueScreen");
-    	createArrowButton(2, 1620, 400, 300, 300, "rightArrow300x300.png", "goStoveScreen");
+    	createArrowButton(2, 1620, 400, 300, 300, "rightArrow300x300.png", "goExtraScreen");
     	
     	// add to window
     	bgPanel[2].add(bgLabel[2]);
     	window.add(bgPanel[2]);
     }
-    public void generateStoveScene() {
+    public void generateExtraScene() {
     	
     	// screen3
-    	createBackground(3,"menubg1920x1080.png");
+    	createBackground(3,"fourthpage.png"); //extra page
     	
     	createObject(3, 600, 700, 300, 300,	 "rice300x300.png", "addRice");
     	createObject(3, 200, 700, 300, 300,	 "stove300x300.png", "stove");
     	
     	createArrowButton(3, 0, 400, 300, 300, "leftArrow300x300.png", "goSelectIngScreen");
-    	createArrowButton(3, 1620, 400, 300, 300, "rightArrow300x300.png", "goPackageScreen");
+    	createArrowButton(3, 1500, 400, 300, 300, "rightArrow300x300.png", "goPackageScreen");
     	
     	// add to window
     	bgPanel[3].add(bgLabel[3]);
@@ -305,16 +307,27 @@ public class UI {
     }
     
     // generate package scenes
-    public void generatePackageScene() {
+    public void generatePackageScene() { //ผัด, แพ็ค
     	
     	// screen4
-    	createBackground(4,"packagebg1920x1080.png");
+    	createBackground(4,"fifthpage.png");
     	
-    	createArrowButton(4, 0, 400, 300, 300, "leftArrow300x300.png", "goStoveScreen");
+    	createArrowButton(4, 0, 400, 300, 300, "leftArrow300x300.png", "goExtraScreen");
+        createArrowButton(4, 1500, 400, 300, 300, "rightArrow300x300.png", "goGameOverScreen");
     	
     	// add to window
     	bgPanel[4].add(bgLabel[4]);
     	window.add(bgPanel[4]);
+    }
+    public void generateGameOverScene() { //final page (maybe)
+    	
+    	createBackground(5,"secondpage.png");
+    	
+    	//createArrowButton(5, 960, 500, 300, 300, "restart300x300.png", "restart");
+        createArrowButton(5, 0, 400, 300, 300, "leftArrow300x300.png", "goPackageScreen");
+    	
+    	bgPanel[5].add(bgLabel[5]);
+    	window.add(bgPanel[5]);
     }
     //change stove image
     public void changeStove(String Command) {
@@ -323,7 +336,7 @@ public class UI {
     	window.remove(bgPanel[3]);
             
         // create new
-    	createBackground(3,"menubg1920x1080.png");
+    	createBackground(3,"fourthpage.png");
     	
     	createObject(3, 600, 700, 300, 300,	 "rice300x300.png", "addRice");
     	
@@ -385,7 +398,7 @@ public class UI {
     	
     	switch (Command) {
     	
-    		case "insertKapao" : 
+    		case "insertKapao" :
     			
     			// add kapao with rice
     			createObject(4, 200, 500, 300, 300, "kapaoRice300x300.png", "ready2pack"); 
@@ -394,7 +407,7 @@ public class UI {
     			
     			// pack kapao
     			System.out.println("PACK TIME");
-    			createObject(4, 900, 500, 300, 300, "package300x300.png", "NULL"); 
+    			createObject(4, 900, 500, 300, 300, "package300x300.png", "NULL");
     			break;
     	}
     	
@@ -408,15 +421,6 @@ public class UI {
     }
     // timer
     	
-    public void generateGameOverScene() {
-    	
-    	createBackground(5,"gameoverbg1920x1080.png");
-    	
-    	createArrowButton(5, 960, 500, 300, 300, "restart300x300.png", "restart");
-    	
-    	bgPanel[5].add(bgLabel[5]);
-    	window.add(bgPanel[5]);
-    }
     // timer
     public void timer(int time, String Command) {
     	Timer timer = new Timer();
@@ -461,7 +465,7 @@ public class UI {
     			
     			// create game over scene
     			generateGameOverScene();
-    			gm.sChanger.showGameOver();
+    			gm.sChanger.showGameOverScreen();
     			timer.cancel();
     			
     		} else if (count < 0 && Command.equals("STOVE") && onStove == true) {

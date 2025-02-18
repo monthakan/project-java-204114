@@ -23,6 +23,7 @@ public class SceneChanger {
 		gm.ui.bgPanel[2].setVisible(false);
 		gm.ui.bgPanel[3].setVisible(false);
 		gm.ui.bgPanel[4].setVisible(false);
+		gm.ui.bgPanel[5].setVisible(false);
 	}
 	// show select ingredient screen
 	public void showSelectIngScreen() {
@@ -34,9 +35,10 @@ public class SceneChanger {
 		gm.ui.bgPanel[2].setVisible(true);
 		gm.ui.bgPanel[3].setVisible(false);
 		gm.ui.bgPanel[4].setVisible(false);
+		gm.ui.bgPanel[5].setVisible(false);
 	}
 	// show stove screen
-	public void showStoveScreen() {
+	public void showExtraScreen() {
 
 		bgNow = 3;
 		
@@ -45,6 +47,7 @@ public class SceneChanger {
 		gm.ui.bgPanel[2].setVisible(false);
 		gm.ui.bgPanel[3].setVisible(true);
 		gm.ui.bgPanel[4].setVisible(false);
+		gm.ui.bgPanel[5].setVisible(false);
 	}
 	// show package screen
 	public void showPackageScreen() {
@@ -56,14 +59,18 @@ public class SceneChanger {
 		gm.ui.bgPanel[2].setVisible(false);
 		gm.ui.bgPanel[3].setVisible(false);
 		gm.ui.bgPanel[4].setVisible(true);
+		gm.ui.bgPanel[5].setVisible(false);
 	}
 	
-	public void showGameOver() {
+	public void showGameOverScreen() {
+
+		bgNow = 5;
 		
 		gm.ui.bgPanel[0].setVisible(false);
 		gm.ui.bgPanel[1].setVisible(false);
 		gm.ui.bgPanel[2].setVisible(false);
 		gm.ui.bgPanel[3].setVisible(false);
 		gm.ui.bgPanel[4].setVisible(false);
+		gm.ui.bgPanel[5].setVisible(true);
 	}
 }
