@@ -1,17 +1,20 @@
 package Main;
+import entity.CustomDialog;
 
 public class SceneChanger {
 
 	GameManager gm;
 	boolean start=false;
 	int bgNow;
+	CustomDialog dialog;
 	
-	public SceneChanger(GameManager gm)  {this.gm = gm;}
-	
-	public int getbgNow() {
-		
-		return bgNow;
+	public SceneChanger(GameManager gm)  {
+		this.gm = gm;
+		dialog = new CustomDialog();
 	}
+	
+	
+	public int getbgNow() {return bgNow;}
 	
 	// show dialouge screen
 	public void showDialogueScreen() {
@@ -23,7 +26,6 @@ public class SceneChanger {
 		gm.ui.bgPanel[2].setVisible(false);
 		gm.ui.bgPanel[3].setVisible(false);
 		gm.ui.bgPanel[4].setVisible(false);
-		gm.ui.bgPanel[5].setVisible(false);
 	}
 	// show select ingredient screen
 	public void showSelectIngScreen() {
@@ -35,10 +37,10 @@ public class SceneChanger {
 		gm.ui.bgPanel[2].setVisible(true);
 		gm.ui.bgPanel[3].setVisible(false);
 		gm.ui.bgPanel[4].setVisible(false);
-		gm.ui.bgPanel[5].setVisible(false);
+
 	}
 	// show stove screen
-	public void showExtraScreen() {
+	public void showStoveScreen() {
 
 		bgNow = 3;
 		
@@ -47,10 +49,10 @@ public class SceneChanger {
 		gm.ui.bgPanel[2].setVisible(false);
 		gm.ui.bgPanel[3].setVisible(true);
 		gm.ui.bgPanel[4].setVisible(false);
-		gm.ui.bgPanel[5].setVisible(false);
+
 	}
 	// show package screen
-	public void showPackageScreen() {
+	public void showExtraScreen() {
 		
 		bgNow = 4;
 		
@@ -59,18 +61,14 @@ public class SceneChanger {
 		gm.ui.bgPanel[2].setVisible(false);
 		gm.ui.bgPanel[3].setVisible(false);
 		gm.ui.bgPanel[4].setVisible(true);
-		gm.ui.bgPanel[5].setVisible(false);
 	}
 	
-	public void showGameOverScreen() {
-
-		bgNow = 5;
+	public void showGameOver() {
 		
 		gm.ui.bgPanel[0].setVisible(false);
 		gm.ui.bgPanel[1].setVisible(false);
 		gm.ui.bgPanel[2].setVisible(false);
 		gm.ui.bgPanel[3].setVisible(false);
 		gm.ui.bgPanel[4].setVisible(false);
-		gm.ui.bgPanel[5].setVisible(true);
 	}
 }

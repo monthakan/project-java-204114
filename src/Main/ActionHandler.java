@@ -19,15 +19,18 @@ public class ActionHandler implements ActionListener{
 		// select case
 		switch(yourChoice) {
 		
-		//add item to stove
+			//game start
+			case "start": gm.sChanger.showDialogueScreen(); break;
 		
-		//change scene
-		case "start" : gm.sChanger.showDialogueScreen(); break;
-		case "goDialogueScreen":gm.sChanger.showDialogueScreen(); break;
-		case "goSelectIngScreen":gm.sChanger.showSelectIngScreen(); break;
-		case "goExtraScreen":gm.sChanger.showExtraScreen(); break;
-		case "goPackageScreen":gm.sChanger.showPackageScreen(); break;
-		case "goGameOverScreen":gm.sChanger.showGameOverScreen(); break;
+			//change scene
+			case "goDialogueScreen": gm.sChanger.showDialogueScreen(); break;
+			case "goSelectIngScreen": gm.sChanger.showSelectIngScreen(); break;
+			case "goStoveScreen": gm.sChanger.showStoveScreen(); break;
+			
+			case "goExtraScreen" : gm.sChanger.showExtraScreen(); break;
+			
+			// game over
+			case "restart": gm.ui.reset();
 		}
 	}
 }
